@@ -30,13 +30,13 @@ trait DatabaseFactory
      */
     private static function db(string $name = null) : TransactionDatabase
     {
-        if ($return = DI::get(__METHOD__,  $name)) {
+        if ($return = DI::get(__METHOD__, $name)) {
             return $return;
         }
 
         $config = DI::config()->get('db/' . ($name ?: 'default'));
         $db = AbstractDatabase::create($config);
 
-        return DI::set(__METHOD__,  $name, $db);
+        return DI::set(__METHOD__, $name, $db);
     }
 }

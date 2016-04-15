@@ -16,7 +16,7 @@ namespace Cawa\Db;
 use Cawa\Db\Exceptions\QueryException;
 use Cawa\Events\DispatcherFactory;
 use Cawa\Events\TimerEvent;
-use Cawa\Uri\Uri;
+use Cawa\Net\Uri;
 
 abstract class AbstractDatabase
 {
@@ -245,7 +245,7 @@ abstract class AbstractDatabase
             return "'" . $data->format('Y-m-d H:i:s') . "'";
         } elseif (is_null($data)) {
             return 'NULL';
-        } elseif (is_numeric($data) && substr((string) $data, 0, 1) != "+"  && substr((string) $data, 0, 1) != "-") {
+        } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+'  && substr((string) $data, 0, 1) != '-') {
             // @see http://php.net/manual/en/function.is-numeric.php
             // Thus +0123.45e6 is a valid numeric value : we don't want
             return (string) $data;

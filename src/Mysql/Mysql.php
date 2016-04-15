@@ -113,7 +113,6 @@ class Mysql extends TransactionDatabase
                 $return = $this->driver->query($sql);
             }
         } catch (\mysqli_sql_exception $exception) {
-
             // no code example : No index used in query/prepared statement
             if (!$exception->getCode()) {
                 self::logger()->warning($exception->getMessage());
