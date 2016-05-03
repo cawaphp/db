@@ -19,11 +19,6 @@ trait DatabaseFactory
 {
 
     /**
-     * @var array
-     */
-    private static $container = [];
-
-    /**
      * @param string $name
      *
      * @return TransactionDatabase
