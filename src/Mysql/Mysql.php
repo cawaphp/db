@@ -23,6 +23,11 @@ class Mysql extends TransactionDatabase
     use LoggerFactory;
 
     /**
+     * Duplicate entry 'xx' for key 'yy'
+     */
+    const ERROR_DUPLICATE = 1062;
+    
+    /**
      * @var \Mysqli
      */
     private $driver;
@@ -157,5 +162,20 @@ class Mysql extends TransactionDatabase
         }
 
         return "'" . $this->driver->escape_string($data) . "'";
+    }
+
+    /**
+     * @param string $string
+     *
+     * @see http://stackoverflow.com/a/26537463/1590168
+     *
+     * @return string
+     */
+    public function escapeFulltext(string $string) : string
+    {
+        $search = preg_replace('/[^\p{L}\p{N}_]+/u', ' ', $string);
+        $search = preg_replace('/[+\-><\(\)~*\"@]+/', ' ', $search);
+
+        return $search;
     }
 }
