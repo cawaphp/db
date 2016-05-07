@@ -26,7 +26,7 @@ class Mysql extends TransactionDatabase
      * Duplicate entry 'xx' for key 'yy'
      */
     const ERROR_DUPLICATE = 1062;
-    
+
     /**
      * @var \Mysqli
      */
