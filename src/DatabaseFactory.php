@@ -17,7 +17,6 @@ use Cawa\Core\DI;
 
 trait DatabaseFactory
 {
-
     /**
      * @param string $name
      *
