@@ -245,6 +245,20 @@ abstract class AbstractDatabase
             return "'" . $data->format('Y-m-d H:i:s') . "'";
         } elseif (is_null($data)) {
             return 'NULL';
+        } elseif (is_array($data)) {
+            if (array_keys($data) !== range(0, count($data) - 1)) {
+                throw new \InvalidArgumentException(sprintf(
+                    "Can't escape associative array with data '%s'",
+                    json_encode($data)
+                ));
+            }
+
+            $return = [];
+            foreach ($data as $current) {
+                $return[] = $this->escape($current);
+            }
+
+            return implode(", ", $return);
         } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+'  && substr((string) $data, 0, 1) != '-') {
             // @see http://php.net/manual/en/function.is-numeric.php
             // Thus +0123.45e6 is a valid numeric value : we don't want
