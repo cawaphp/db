@@ -258,7 +258,7 @@ abstract class AbstractDatabase
                 $return[] = $this->escape($current);
             }
 
-            return implode(", ", $return);
+            return implode(', ', $return);
         } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+'  && substr((string) $data, 0, 1) != '-') {
             // @see http://php.net/manual/en/function.is-numeric.php
             // Thus +0123.45e6 is a valid numeric value : we don't want
