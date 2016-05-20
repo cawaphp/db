@@ -141,7 +141,11 @@ class Mysql extends TransactionDatabase
                 }
             } while ($warnings->next());
 
-            throw new QueryException($this, $sql, implode(' | ', $messages), $code);
+            throw new QueryException($this,
+                $sql,
+                implode(' | ', $messages) . ", Warning! transaction IS committed!",
+                $code
+            );
         }
 
         return new Result($sql, $return, $unbuffered, $this->driver->insert_id, $this->driver->affected_rows);
