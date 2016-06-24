@@ -155,10 +155,10 @@ class Mysql extends TransactionDatabase
     /**
      * {@inheritdoc}
      */
-    public function escape($data) : string
+    public function escape($data)
     {
-        $parentData = parent::escape($data);
-        if (is_string($parentData)) {
+        list($parentData, $escape) = parent::escape($data);
+        if (!$escape) {
             return $parentData;
         }
 
@@ -166,7 +166,7 @@ class Mysql extends TransactionDatabase
             $this->connect();
         }
 
-        return "'" . $this->driver->escape_string($data) . "'";
+        return "'" . $this->driver->escape_string((string) $parentData) . "'";
     }
 
     /**

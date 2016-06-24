@@ -106,10 +106,10 @@ class Pdo extends TransactionDatabase
     /**
      * {@inheritdoc}
      */
-    public function escape($data) : string
+    protected function escape($data)
     {
-        $parentData = parent::escape($data);
-        if (is_string($parentData)) {
+        list($parentData, $escape) = parent::escape($data);
+        if (!$escape) {
             return $parentData;
         }
 
@@ -117,6 +117,6 @@ class Pdo extends TransactionDatabase
             $this->connect();
         }
 
-        return $this->driver->quote($data) ;
+        return $this->driver->quote($parentData) ;
     }
 }

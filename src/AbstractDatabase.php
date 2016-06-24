@@ -237,14 +237,14 @@ abstract class AbstractDatabase
     /**
      * @param mixed $data
      *
-     * @return string
+     * @return string|null|array
      */
     protected function escape($data)
     {
         if ($data instanceof \DateTime) {
-            return "'" . $data->format('Y-m-d H:i:s') . "'";
+            return [$data->format('Y-m-d H:i:s'), true];
         } elseif (is_null($data)) {
-            return 'NULL';
+            return ['NULL', false];
         } elseif (is_array($data)) {
             if (array_keys($data) !== range(0, count($data) - 1)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -258,15 +258,18 @@ abstract class AbstractDatabase
                 $return[] = $this->escape($current);
             }
 
-            return implode(', ', $return);
+            return [implode(', ', $return), false];
+        } elseif (is_string($data) && ctype_digit($data) && substr($data, 0, 1) == "0") {
+            // phone number starting with a 0x xxx xxx
+            return [$data, true];
         } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+'  && substr((string) $data, 0, 1) != '-') {
             // @see http://php.net/manual/en/function.is-numeric.php
             // Thus +0123.45e6 is a valid numeric value : we don't want
-            return (string) $data;
+            return [$data, true];
         } elseif (is_bool($data)) {
-            return $data === true ? 'TRUE' : 'FALSE';
+            return [$data === true ? 'TRUE' : 'FALSE', false];
         } else {
-            return null;
+            return [$data, true];
         }
     }
 
