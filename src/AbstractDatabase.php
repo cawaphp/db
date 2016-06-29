@@ -259,7 +259,7 @@ abstract class AbstractDatabase
             }
 
             return [implode(', ', $return), false];
-        } elseif (is_string($data) && ctype_digit($data) && substr($data, 0, 1) == "0") {
+        } elseif (is_string($data) && ctype_digit($data) && substr($data, 0, 1) == '0') {
             // phone number starting with a 0x xxx xxx
             return [$data, true];
         } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+'  && substr((string) $data, 0, 1) != '-') {
