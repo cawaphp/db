@@ -37,20 +37,15 @@ class Result extends AbstractResult
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    protected function load() : bool
+    protected function load()
     {
-        $this->currentData = null;
-
         if (($data = $this->result->fetch(\PDO::FETCH_ASSOC)) === false) {
             return false;
         }
 
-        $this->position++;
-        $this->currentData = $data;
-
-        return true;
+        return $data;
     }
 
     /**

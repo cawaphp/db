@@ -242,7 +242,7 @@ abstract class AbstractDatabase
     protected function escape($data)
     {
         if ($data instanceof \DateTime) {
-            return [$data->format('Y-m-d H:i:s'), true];
+            return [gmdate('Y-m-d H:i:s', $data->getTimestamp()), true];
         } elseif (is_null($data)) {
             return ['NULL', false];
         } elseif (is_array($data)) {

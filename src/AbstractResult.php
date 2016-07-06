@@ -13,6 +13,10 @@ declare (strict_types=1);
 
 namespace Cawa\Db;
 
+use Cawa\Date\Date;
+use Cawa\Date\DateTime;
+use Cawa\Date\Time;
+
 abstract class AbstractResult implements \Iterator, \Countable
 {
     /**
@@ -59,6 +63,71 @@ abstract class AbstractResult implements \Iterator, \Countable
     /**
      * @var array
      */
+    protected $convert = [];
+
+    /**
+     * @param string $data
+     *
+     * @return DateTime
+     */
+    protected static function convertDatetime(string $data) : DateTime
+    {
+        return new DateTime($data, 'UTC');
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return DateTime
+     */
+    protected static function convertTimestamp(string $data) : DateTime
+    {
+        return DateTime::createFromTimestamp($data);
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return Date
+     */
+    protected static function convertDate(string $data) : Date
+    {
+        return new Date($data);
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return Time
+     */
+    protected static function convertTime(string $data) : Time
+    {
+        return new Time($data);
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return int
+     */
+    protected static function convertInt(string $data) : int
+    {
+        return (int) $data;
+    }
+
+    /**
+     * @param string $data
+     *
+     * @return float
+     */
+    protected static function convertFloat(string $data) : float
+    {
+        return (float) $data;
+    }
+
+    /**
+     * @var array
+     */
     protected $currentData = [];
 
     /**
@@ -89,13 +158,31 @@ abstract class AbstractResult implements \Iterator, \Countable
      */
     public function valid() : bool
     {
-        return $this->load();
+        $this->currentData = null;
+
+        $data = $this->load();
+
+        if (is_bool($data)) {
+            return $data;
+        }
+
+        // convert resultset & cst
+        foreach ($this->convert as $col => $callable) {
+            if (!is_null($data[$col])) {
+                $data[$col] = $callable($data[$col]);
+            }
+        }
+
+        $this->position++;
+        $this->currentData = $data;
+
+        return true;
     }
 
     /**
-     * @return bool
+     * @return bool|array
      */
-    abstract protected function load() : bool;
+    abstract protected function load();
 
     /**
      * @return int
