@@ -60,6 +60,22 @@ abstract class TransactionDatabase extends AbstractDatabase
     }
 
     /**
+     * Start a sql transaction if not already started.
+     * Return true if the transaction is already started.
+     *
+     * @return bool
+     */
+    public function startTransactionIf() : bool
+    {
+        $started = $this->isTransactionStarted();
+        if (!$started) {
+            $this->startTransaction();
+        }
+
+        return $started;
+    }
+
+    /**
      * Rollback a sql transaction
      *
      * @throws QueryException
