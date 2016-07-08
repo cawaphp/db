@@ -13,6 +13,7 @@ declare (strict_types=1);
 
 namespace Cawa\Db;
 
+use Cawa\Date\Date;
 use Cawa\Db\Exceptions\QueryException;
 use Cawa\Events\DispatcherFactory;
 use Cawa\Events\TimerEvent;
@@ -241,7 +242,9 @@ abstract class AbstractDatabase
      */
     protected function escape($data)
     {
-        if ($data instanceof \DateTime) {
+        if ($data instanceof Date) {
+            return [$data->format(), true];
+        } else if ($data instanceof \DateTime) {
             return [gmdate('Y-m-d H:i:s', $data->getTimestamp()), true];
         } elseif (is_null($data)) {
             return ['NULL', false];
