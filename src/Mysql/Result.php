@@ -49,8 +49,7 @@ class Result extends AbstractResult
         $this->affectedRows = $affectedRows;
         if ($result instanceof \mysqli_result) {
             foreach ($result->fetch_fields() as $field) {
-                switch ($field->type)
-                {
+                switch ($field->type) {
                     case MYSQLI_TYPE_DATETIME:
                         $this->convert[$field->name] = self::class . '::convertDatetime';
                         break;

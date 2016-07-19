@@ -78,6 +78,7 @@ class Pdo extends TransactionDatabase
     protected function closeConnection() : bool
     {
         $this->driver = null;
+
         return true;
     }
 
