@@ -83,7 +83,7 @@ abstract class AbstractDatabase
         $this->openConnection();
         $this->connected = true;
 
-        self::dispatcher()->emit($event);
+        self::emit($event);
     }
 
     /**
@@ -111,7 +111,7 @@ abstract class AbstractDatabase
             'count' => $result ? ($result->isUnbuffered() ? null : $result->count()) : null,
         ]);
 
-        self::dispatcher()->emit($event);
+        self::emit($event);
     }
 
     /**
