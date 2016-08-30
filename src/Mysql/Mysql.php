@@ -93,7 +93,9 @@ class Mysql extends TransactionDatabase
             );
         }
 
-        $this->execute('SET NAMES utf8');
+        // mysql only support 3 bytes on utf8
+        // @see http://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
+        $this->execute('SET NAMES utf8mb4');
 
         return true;
     }
