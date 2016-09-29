@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types=1);
+declare (strict_types = 1);
 
 namespace Cawa\Db\Exceptions;
 
@@ -22,7 +22,7 @@ class QueryException extends AbstractException
      *
      * @param AbstractDatabase $db
      * @param string $query
-     * @param int $message
+     * @param string $message
      * @param int $code
      * @param \Throwable $previous
      */
@@ -33,7 +33,7 @@ class QueryException extends AbstractException
         int $code = 0,
         \Throwable $previous = null
     ) {
-        $message = sprintf('[Query: %s] ', $query) . $message;
+        $message = $message . sprintf('[Query: %s] ', $query) ;
 
         parent::__construct($db, $message, $code, $previous);
     }
