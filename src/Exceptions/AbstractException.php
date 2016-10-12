@@ -30,11 +30,12 @@ abstract class AbstractException extends \ErrorException
         \Throwable $previous = null
     ) {
         $message = sprintf(
-            '[%s.%s] [Error: %s] ',
+            '[Db: %s.%s] [Error: %s] [Message: %s]',
             $db->getUri()->getHost(),
             substr($db->getUri()->getPath(), 1),
-            $code
-        ) . $message;
+            $code,
+            $message
+        );
 
         $filename = __FILE__;
         $lineno = __LINE__;

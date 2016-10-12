@@ -15,6 +15,7 @@ namespace Cawa\Db\Mysql;
 
 use Cawa\Db\Exceptions\ConnectionException;
 use Cawa\Db\Exceptions\QueryException;
+use Cawa\Db\Exceptions\WarningException;
 use Cawa\Db\TransactionDatabase;
 use Cawa\Log\LoggerFactory;
 
@@ -61,7 +62,7 @@ class Mysql extends TransactionDatabase
                     MYSQLI_CLIENT_FOUND_ROWS,
                     MYSQLI_CLIENT_IGNORE_SPACE,
                     MYSQLI_CLIENT_INTERACTIVE,
-                    MYSQLI_CLIENT_SSL
+                    MYSQLI_CLIENT_SSL,
                 ])
             ) {
                 $flags = $flags | $key;
@@ -134,20 +135,27 @@ class Mysql extends TransactionDatabase
         }
 
         if ($warnings = $this->driver->get_warnings()) {
+            $exception = null;
             $messages = [];
-            $code = null;
+
             do {
                 if ($warnings !== true) {
-                    $code = $warnings->errno;
-                    $messages[] = '#' . $code . ' ' . $warnings->message;
+                    $exception = new QueryException(
+                        $this,
+                        $sql,
+                        $warnings->message,
+                        $warnings->errno,
+                        $exception
+                    );
+                    $messages[] = '#' . $warnings->errno . ' ' . $warnings->message;
                 }
             } while ($warnings->next());
 
-            throw new QueryException(
+            throw new WarningException(
                 $this,
                 $sql,
-                implode(' | ', $messages) . ', Warning! transaction IS committed!',
-                $code
+                implode(' | ', $messages),
+                $exception
             );
         }
 

@@ -33,8 +33,8 @@ class QueryException extends AbstractException
         int $code = 0,
         \Throwable $previous = null
     ) {
-        $message = $message . sprintf('[Query: %s] ', $query) ;
-
         parent::__construct($db, $message, $code, $previous);
+
+        $this->message .= sprintf(' [Query: %s] ', $query);
     }
 }
