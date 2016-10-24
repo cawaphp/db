@@ -14,10 +14,14 @@ declare (strict_types = 1);
 namespace Cawa\Db;
 
 use Cawa\Db\Exceptions\QueryException;
+use Cawa\Events\Event;
+use Cawa\Events\InstanceDispatcherTrait;
 use Cawa\Events\TimerEvent;
 
 abstract class TransactionDatabase extends AbstractDatabase
 {
+    use InstanceDispatcherTrait;
+
     /**
      * @var bool
      */
@@ -55,6 +59,8 @@ abstract class TransactionDatabase extends AbstractDatabase
 
         $this->query($sql);
         $this->transactionStarted = true;
+
+        $this->instanceDispatcher()->emit(new Event('db.startTransaction'));
 
         return true;
     }
@@ -100,6 +106,8 @@ abstract class TransactionDatabase extends AbstractDatabase
         $this->query($sql);
         $this->transactionStarted = false;
 
+        $this->instanceDispatcher()->emit(new Event('db.rollback'));
+
         return true;
     }
 
@@ -127,6 +135,8 @@ abstract class TransactionDatabase extends AbstractDatabase
 
         $this->query($sql);
         $this->transactionStarted = false;
+
+        $this->instanceDispatcher()->emit(new Event('db.commit'));
 
         return true;
     }
