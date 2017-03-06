@@ -244,7 +244,7 @@ abstract class AbstractDatabase
     {
         if ($data instanceof Date) {
             return [$data->format(), true];
-        } elseif ($data instanceof \DateTime) {
+        } elseif ($data instanceof \DateTime || $data instanceof \DateTimeImmutable) {
             return [gmdate('Y-m-d H:i:s', $data->getTimestamp()), true];
         } elseif (is_null($data)) {
             return ['NULL', false];
