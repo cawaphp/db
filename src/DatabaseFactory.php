@@ -18,19 +18,20 @@ use Cawa\Core\DI;
 trait DatabaseFactory
 {
     /**
-     * @param string $name
+     * @param string $name config key or class name
      *
      * @return TransactionDatabase
      */
     private static function db(string $name = null) : TransactionDatabase
     {
-        if ($return = DI::get(__METHOD__, $name)) {
+        list($container, $config, $return) = DI::detect(__METHOD__, 'db', $name);
+
+        if ($return) {
             return $return;
         }
 
-        $config = DI::config()->get('db/' . ($name ?: 'default'));
         $db = AbstractDatabase::create($config);
 
-        return DI::set(__METHOD__, $name, $db);
+        return DI::set(__METHOD__, $container, $db);
     }
 }
