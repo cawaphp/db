@@ -18,6 +18,11 @@ use Cawa\Core\DI;
 trait DatabaseFactory
 {
     /**
+     * @var array|TransactionDatabase[]
+     */
+    private static $db = [];
+
+    /**
      * @param string $name config key or class name
      *
      * @return TransactionDatabase
@@ -30,7 +35,20 @@ trait DatabaseFactory
             return $return;
         }
 
+        if (is_string($config)) {
+            $key = 'instance_' . md5($config);
+        } else {
+            $key = 'instance_' . md5(serialize($config));
+        }
+
+
+        if (DI::get(__METHOD__, $key)) {
+            return DI::get(__METHOD__, $key);
+        }
+
         $db = AbstractDatabase::create($config);
+        DI::set(__METHOD__, $key, $db);
+
 
         return DI::set(__METHOD__, $container, $db);
     }
