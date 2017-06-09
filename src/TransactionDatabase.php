@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Cawa\Db;
 
@@ -36,7 +36,7 @@ abstract class TransactionDatabase extends AbstractDatabase
     }
 
     /**
-     * Start a sql transaction
+     * Start a sql transaction.
      *
      * @throws QueryException
      *
@@ -82,7 +82,7 @@ abstract class TransactionDatabase extends AbstractDatabase
     }
 
     /**
-     * Rollback a sql transaction
+     * Rollback a sql transaction.
      *
      * @throws QueryException
      *
@@ -112,7 +112,7 @@ abstract class TransactionDatabase extends AbstractDatabase
     }
 
     /**
-     * Commit a sql transaction
+     * Commit a sql transaction.
      *
      * @throws QueryException
      *

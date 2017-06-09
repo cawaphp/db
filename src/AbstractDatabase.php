@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Cawa\Db;
 
@@ -75,9 +75,9 @@ abstract class AbstractDatabase
     {
         $event = new TimerEvent('db.connection');
         $event->addData([
-            'hostname' =>  $this->uri->getHost(),
-            'user' =>  $this->uri->getUser(),
-            'port' =>  $this->uri->getPort(),
+            'hostname' => $this->uri->getHost(),
+            'user' => $this->uri->getUser(),
+            'port' => $this->uri->getPort(),
         ]);
 
         $this->openConnection();
@@ -104,7 +104,7 @@ abstract class AbstractDatabase
     protected function emitQueryEvent(TimerEvent $event, AbstractResult $result = null, string $sql = null)
     {
         $event->addData([
-            'hostname' =>  $this->uri->getHost(),
+            'hostname' => $this->uri->getHost(),
             'database' => substr($this->uri->getPath(), 1),
             'query' => $result ? $result->getQuery() : $sql,
             'affected' => $result ? $result->affectedRows() : null,
@@ -265,7 +265,7 @@ abstract class AbstractDatabase
         } elseif (is_string($data) && ctype_digit($data) && substr($data, 0, 1) == '0') {
             // phone number starting with a 0x xxx xxx
             return [$data, true];
-        } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+'  && substr((string) $data, 0, 1) != '-') {
+        } elseif (is_numeric($data) && substr((string) $data, 0, 1) != '+' && substr((string) $data, 0, 1) != '-') {
             // @see http://php.net/manual/en/function.is-numeric.php
             // Thus +0123.45e6 is a valid numeric value : we don't want
             return [$data, true];

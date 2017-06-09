@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Cawa\Db;
 
@@ -41,14 +41,12 @@ trait DatabaseFactory
             $key = 'instance_' . md5(serialize($config));
         }
 
-
         if (DI::get(__METHOD__, $key)) {
             return DI::get(__METHOD__, $key);
         }
 
         $db = AbstractDatabase::create($config);
         DI::set(__METHOD__, $key, $db);
-
 
         return DI::set(__METHOD__, $container, $db);
     }

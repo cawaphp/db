@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Cawa\Db\Pdo;
 
@@ -119,6 +119,6 @@ class Pdo extends TransactionDatabase
             $this->connect();
         }
 
-        return $this->driver->quote($parentData) ;
+        return $this->driver->quote($parentData);
     }
 }

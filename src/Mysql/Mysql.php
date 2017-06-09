@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Cawa\Db\Mysql;
 
@@ -24,7 +24,7 @@ class Mysql extends TransactionDatabase
     use LoggerFactory;
 
     /**
-     * Duplicate entry 'xx' for key 'yy'
+     * Duplicate entry 'xx' for key 'yy'.
      */
     const ERROR_DUPLICATE = 1062;
 

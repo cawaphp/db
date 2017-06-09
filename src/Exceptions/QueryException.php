@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 namespace Cawa\Db\Exceptions;
 
@@ -17,6 +17,16 @@ use Cawa\Db\AbstractDatabase;
 
 class QueryException extends AbstractException
 {
+    /**
+     * @param int $code
+     *
+     * @return bool
+     */
+    public function isCode(int $code) : bool
+    {
+        return $this->getCode() === $code;
+    }
+
     /**
      * ConnectionException constructor.
      *
