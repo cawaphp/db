@@ -65,7 +65,7 @@ class Pdo extends TransactionDatabase
             );
         }
 
-        $result = $this->execute('SET NAMES utf8');
+        $this->execute('SET NAMES utf8');
 
         $this->driver->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
@@ -108,7 +108,7 @@ class Pdo extends TransactionDatabase
     /**
      * {@inheritdoc}
      */
-    protected function escape($data)
+    public function escape($data)
     {
         list($parentData, $escape) = parent::escape($data);
         if (!$escape) {

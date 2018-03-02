@@ -14,6 +14,7 @@ declare(strict_types = 1);
 namespace Cawa\Db;
 
 use Cawa\Date\Date;
+use Cawa\Db\Exceptions\ConnectionException;
 use Cawa\Db\Exceptions\QueryException;
 use Cawa\Events\DispatcherFactory;
 use Cawa\Events\TimerEvent;
@@ -87,7 +88,7 @@ abstract class AbstractDatabase
     }
 
     /**
-     *
+     * @throws ConnectionException
      */
     abstract protected function openConnection();
 
@@ -118,7 +119,9 @@ abstract class AbstractDatabase
      * @param string $sql
      * @param array $params
      *
-     * @return array
+     * @throws QueryException
+     *
+     * @return string
      */
     private function getFinalQuery(string $sql, array $params = []) : string
     {
@@ -163,6 +166,8 @@ abstract class AbstractDatabase
      * @param string $sql
      * @param array $params
      * @param bool $unbuffered
+     *
+     * @throws QueryException
      *
      * @return AbstractResult
      */
@@ -218,8 +223,6 @@ abstract class AbstractDatabase
      * @param string $sql
      * @param array $params
      *
-     * @throws QueryException
-     *
      * @return array|bool
      */
     public function fetchAll(string $sql, array $params = []) : array
@@ -240,7 +243,7 @@ abstract class AbstractDatabase
      *
      * @return string|null|array
      */
-    protected function escape($data)
+    public function escape($data)
     {
         if ($data instanceof Date) {
             return [$data->format(), true];
@@ -279,6 +282,8 @@ abstract class AbstractDatabase
     /**
      * @param string $sql
      * @param bool $unbuffered
+     *
+     * @throws QueryException
      *
      * @return \Cawa\Db\AbstractResult
      */
